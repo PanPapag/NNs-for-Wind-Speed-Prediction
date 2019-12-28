@@ -1,4 +1,17 @@
 import argparse
+import util
+
+import numpy as np
+import pandas as pd
+
+from keras.models import load_model
+from sklearn.metrics import mean_absolute_error
+from sklearn.metrics import mean_squared_error
+from util import mean_absolute_percentage_error
+
+MODEL_PATH = '../models/WindDenseNN1.h5'
+ACTUAL_PATH = '../datasets/actual.csv'
+PREDICTED_PATH = '../datasets/predicted.csv'
 
 def make_args_parser():
     # create an ArgumentParser object
@@ -7,7 +20,15 @@ def make_args_parser():
     parser.add_argument('-i', '--input', action='store',
                         default=None,  metavar='',
                         help='relative path to the input file')
-
+    parser.add_argument('-m', '--model', action='store',
+                        default=MODEL_PATH,  metavar='',
+                        help='relative path to the pretrained model')
+    parser.add_argument('-a', '--actual', action='store',
+                        default=ACTUAL_PATH,  metavar='',
+                        help='relative path to the actual output')
+    parser.add_argument('-p', '--predicted', action='store',
+                        default=PREDICTED_PATH,  metavar='',
+                        help='relative path to the predicted output')
     # return an ArgumentParser object
     return parser.parse_args()
 
@@ -24,7 +45,23 @@ def main():
     # parse and print arguments
     args = make_args_parser()
     print_args(args)
-
+    # load input file as well as the timestamps
+    X, ts = util.load_file(args.input)
+    # load model
+    model = load_model(args.model)
+    # compile model
+    model.compile(loss='mean_squared_error', optimizer='adam')
+    # print model summary
+    print("------------------------- Model Summary -------------------------")
+    model.summary()
+    # predict model output
+    y_pred = model.predict(X, batch_size=32)
+    # load actual values
+    y_true, _ = util.load_file(args.actual)
+    # Compute MAE, MAPE and MSE
+    mae = mean_absolute_error(y_true, y_pred)
+    mape = mean_absolute_percentage_error(y_true, y_pred)
+    mse = mean_squared_error(y_true, y_pred)
 
 if __name__ == '__main__':
     main()
