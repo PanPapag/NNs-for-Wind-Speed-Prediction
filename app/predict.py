@@ -1,5 +1,7 @@
 import argparse
 import util
+import time
+import os
 
 import numpy as np
 import pandas as pd
@@ -62,6 +64,11 @@ def main():
     mae = mean_absolute_error(y_true, y_pred)
     mape = mean_absolute_percentage_error(y_true, y_pred)
     mse = mean_squared_error(y_true, y_pred)
+    # Write results to csv form
+    with open(PREDICTED_PATH, 'a') as file:
+        file.write('MAE: {:.4f}\tMAPE: {:.4f}\tMSE: {:.4f}\n'.format(mae,mape,mse))
+        df = pd.concat([ts, pd.DataFrame(y_pred)], axis=1)
+        df.to_csv(file, index=False, header=False)
 
 if __name__ == '__main__':
     main()

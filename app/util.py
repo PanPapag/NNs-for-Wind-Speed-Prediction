@@ -29,7 +29,7 @@ def load_model(path):
 def load_file(path):
     # load file into a pandas dataframe
     df = pd.read_csv(path, encoding='utf-8', sep=',')
-    # name each column
+    # name columns
     dynamic_columns = []
     for i in range(df.shape[1] - 1):
         dynamic_columns.append('df_' + str(i+1))
