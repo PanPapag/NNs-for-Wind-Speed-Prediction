@@ -1,5 +1,6 @@
 import argparse
 import util
+import time
 import os
 
 import numpy as np
@@ -11,8 +12,7 @@ from sklearn.metrics import mean_squared_error
 from util import mean_absolute_percentage_error
 
 MODEL_PATH = '../models/WindDenseNN1.h5'
-ACTUAL_PATH = '../datasets/actual.csv'
-PREDICTED_PATH = '../datasets/predicted.csv'
+OUTPUT_PATH = '../datasets/new_representations.csv'
 
 def make_args_parser():
     # create an ArgumentParser object
@@ -46,22 +46,7 @@ def main():
     # print model summary
     print("------------------------- Model Summary -------------------------")
     model.summary()
-    # predict model output
-    y_pred = model.predict(X, batch_size=32)
-    # load actual values
-    y_true, _ = util.load_file(ACTUAL_PATH)
-    # Compute MAE, MAPE and MSE
-    mae = mean_absolute_error(y_true, y_pred)
-    mape = mean_absolute_percentage_error(y_true, y_pred)
-    mse = mean_squared_error(y_true, y_pred)
-    # Check if file already exists. If so delete it
-    if os.path.exists(PREDICTED_PATH):
-        os.remove(PREDICTED_PATH)
-    # Open file an write from scratch
-    with open(PREDICTED_PATH, 'a') as file:
-        file.write('MAE: {:.4f}\tMAPE: {:.4f}\tMSE: {:.4f}\n'.format(mae,mape,mse))
-        df = pd.concat([ts, pd.DataFrame(y_pred)], axis=1)
-        df.to_csv(file, index=False, header=False)
+
 
 if __name__ == '__main__':
     main()
