@@ -39,14 +39,22 @@ def main():
     print_args(args)
     # load input file as well as the timestamps
     X, ts = util.load_file(args.input)
-    # load model
-    model = load_model(MODEL_PATH)
-    # compile model
-    model.compile(loss='mean_squared_error', optimizer='adam')
+    # load and compile model
+    model = util.load_and_compile_model(MODEL_PATH)
     # print model summary
     print("------------------------- Model Summary -------------------------")
     model.summary()
-
+    # Get new model having as output the first hidden of our pretrained model
+    new_model = util.get_intermediate_layer_model(model, 'dense_1')
+    # print model summary
+    print("--------------- Intermediate Layer Model Summary ----------------")
+    new_model.summary()
+    # predict new model output
+    y_pred = new_model.predict(X, batch_size=32)
+    # Open file an write from scratch
+    with open(OUTPUT_PATH, 'w') as file:
+        df = pd.concat([ts, pd.DataFrame(y_pred)], axis=1)
+        df.to_csv(file, index=False, header=False)
 
 if __name__ == '__main__':
     main()

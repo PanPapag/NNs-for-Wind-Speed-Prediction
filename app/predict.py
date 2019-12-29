@@ -5,7 +5,6 @@ import os
 import numpy as np
 import pandas as pd
 
-from keras.models import load_model
 from sklearn.metrics import mean_absolute_error
 from sklearn.metrics import mean_squared_error
 from util import mean_absolute_percentage_error
@@ -39,10 +38,8 @@ def main():
     print_args(args)
     # load input file as well as the timestamps
     X, ts = util.load_file(args.input)
-    # load model
-    model = load_model(MODEL_PATH)
-    # compile model
-    model.compile(loss='mean_squared_error', optimizer='adam')
+    # load and compile model
+    model = util.load_and_compile_model(MODEL_PATH)
     # print model summary
     print("------------------------- Model Summary -------------------------")
     model.summary()

@@ -1,22 +1,18 @@
 import numpy as np
 import pandas as pd
 
-from keras.models import Sequential
-from keras.layers import Dense
+from keras.models import Model, load_model
 
-# Define Neural Network model
-def get_model():
-    # create model
-    model = Sequential()
-    model.add(Dense(64, input_dim=128, activation='relu'))
-    model.add(Dense(7, activation='sigmoid'))
-    # compile model
-    model.compile(loss='mean_squared_error', optimizer='adam')
-    return model
-
-# Load pretrained keras model
-def load_model(path):
+# Define a new model which has only one layer, the first layer
+# of the pretrained one
+def get_intermediate_layer_model(model, layer_name):
+    intermediate_layer_model = Model(inputs=model.input,
+                                     outputs=model.get_layer(layer_name).output)
+    return intermediate_layer_model
+# Load and compile pretrained keras model
+def load_and_compile_model(path):
     model = load_model(path)
+    model.compile(loss='mean_squared_error', optimizer='adam')
     return model
 
 '''
