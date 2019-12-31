@@ -5,10 +5,6 @@ import os
 import numpy as np
 import pandas as pd
 
-from sklearn.metrics import mean_absolute_error
-from sklearn.metrics import mean_squared_error
-from util import mean_absolute_percentage_error
-
 MODEL_PATH = '../models/WindDenseNN1.h5'
 ACTUAL_PATH = '../datasets/actual.csv'
 PREDICTED_PATH = '../datasets/predicted.csv'
@@ -48,9 +44,9 @@ def main():
     # load actual values
     y_true, _ = util.load_file(ACTUAL_PATH)
     # Compute MAE, MAPE and MSE
-    mae = mean_absolute_error(y_true, y_pred)
-    mape = mean_absolute_percentage_error(y_true, y_pred)
-    mse = mean_squared_error(y_true, y_pred)
+    mae = util.compute_mae(X, y_true, model)
+    mape = util.compute_mape(X, y_true, model)
+    mse = util.compute_mse(X, y_true, model)
     # Check if file already exists. If so delete it
     if os.path.exists(PREDICTED_PATH):
         os.remove(PREDICTED_PATH)
@@ -58,7 +54,7 @@ def main():
     with open(PREDICTED_PATH, 'a') as file:
         file.write('MAE: {:.4f}\tMAPE: {:.4f}\tMSE: {:.4f}\n'.format(mae,mape,mse))
         df = pd.concat([ts, pd.DataFrame(y_pred)], axis=1)
-        df.to_csv(file, index=False, header=False)
+        df.to_csv(file, index=False, header=False, sep='\t', encoding='utf-8')
 
 if __name__ == '__main__':
     main()

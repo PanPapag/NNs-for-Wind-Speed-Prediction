@@ -1,6 +1,6 @@
 import numpy as np
 import pandas as pd
-
+from keras import losses
 from keras.models import Model, load_model
 
 # Define a new model which has only one layer, the first layer
@@ -12,7 +12,6 @@ def get_intermediate_layer_model(model, layer_name):
 # Load and compile pretrained keras model
 def load_and_compile_model(path):
     model = load_model(path)
-    model.compile(loss='mean_squared_error', optimizer='adam')
     return model
 
 '''
@@ -37,7 +36,17 @@ def load_file(path):
     # return info in the form of a tuple
     return values_df, timestamps_df
 
-def mean_absolute_percentage_error(y_true, y_pred):
-    y_true, y_pred = np.array(y_true), np.array(y_pred)
-    return np.mean(np.abs(np.divide((y_true - y_pred), y_true, \
-        out=np.zeros_like((y_true - y_pred)), where=y_true!=0))) * 100
+def compute_mae(test_data, target_data, model):
+    model.compile(loss=losses.mean_absolute_error, optimizer='sgd')
+    res = model.evaluate(test_data, target_data, batch_size=32)
+    return res
+
+def compute_mse(test_data, target_data, model):
+    model.compile(loss=losses.mean_squared_error, optimizer='sgd')
+    res = model.evaluate(test_data, target_data, batch_size=32)
+    return res
+
+def compute_mape(test_data, target_data, model):
+    model.compile(loss=losses.mean_absolute_percentage_error, optimizer='sgd')
+    res = model.evaluate(test_data, target_data, batch_size=32)
+    return res
