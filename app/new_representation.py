@@ -9,7 +9,6 @@ import pandas as pd
 from keras.models import load_model
 from sklearn.metrics import mean_absolute_error
 from sklearn.metrics import mean_squared_error
-from util import mean_absolute_percentage_error
 
 MODEL_PATH = '../models/WindDenseNN1.h5'
 OUTPUT_PATH = '../datasets/new_representations.csv'
@@ -54,7 +53,7 @@ def main():
     # Open file an write from scratch
     with open(OUTPUT_PATH, 'w') as file:
         df = pd.concat([ts, pd.DataFrame(y_pred)], axis=1)
-        df.to_csv(file, index=False, header=False)
+        df.to_csv(file, index=False, header=False, sep='\t', encoding='utf-8')
 
 if __name__ == '__main__':
     main()

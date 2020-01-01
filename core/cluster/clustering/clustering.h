@@ -106,12 +106,14 @@ namespace cluster {
         */
         std::tuple<std::vector<T>,std::vector<std::vector<size_t>>,double>
           Predict(void) {
+          std::cout << "Init" << std::endl;
           /* Start time measuring */
           auto start = high_resolution_clock::now();
           /* Declare types */
           std::vector<T> centroids;
           std::tuple<std::vector<std::vector<size_t>>,std::vector<T>> clusters;
           /* At first initialize centroids */
+          
 					if (init == "random") {
 						centroids = RandomInit(dataset_vectors, no_vectors,
 																	 vectors_dim, no_clusters);
@@ -119,10 +121,12 @@ namespace cluster {
 						centroids = ParkJunInit(dataset_vectors, no_vectors,
 																	  vectors_dim, no_clusters);
 					}
+          
           /* Calculate clusters and update centroids max_iter times */
           for (size_t i = 0; i < max_iter; ++i) {
             /* Assigment step */
-						if (assign == "lloyd") {
+						std::cout << "assignment" << std::endl;
+            if (assign == "lloyd") {
 							clusters = LloydsAssignment(dataset_vectors, centroids,
 																					no_vectors, vectors_dim, no_clusters);
 						} else if (assign == "range-lsh") {
@@ -132,7 +136,7 @@ namespace cluster {
                                                 no_clusters, lsh_structure,
                                                 map_id_to_index);
 						}
-
+            std::cout << "update" << std::endl;
             /* Update step */
             auto prev_centroids = centroids;
 						if (update == "mean") {

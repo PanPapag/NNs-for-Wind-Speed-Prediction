@@ -32,13 +32,17 @@ namespace cluster {
       std::vector<T> ParkJunInit(const std::vector<T>& dataset_vectors,
         const int& no_vectors, const int& vectors_dim, const int& no_clusters) {
         // Declare 2D d array which holds all distances between the vectors
-        T d_array[no_vectors][no_vectors];
+        T** d_array = new T*[no_vectors];
+        for(int i = 0; i < no_vectors; ++i)
+          d_array[i] = new T[no_vectors];
         // Calculate all distances using ManhattanDistance
         for (size_t i = 0; i < no_vectors; ++i) {
           for (size_t j = 0; j < no_vectors; ++j) {
             if (i == j) {
+              std::cout << "same" << std::endl;
               d_array[i][j] = {};
             } else {
+              std::cout << "manhattan" << std::endl;
               d_array[i][j] = metric::ManhattanDistance<T>(
                 std::next(dataset_vectors.begin(), i * vectors_dim),
                 std::next(dataset_vectors.begin(), j * vectors_dim),
@@ -55,6 +59,7 @@ namespace cluster {
             for (size_t t = 0; t < no_vectors; ++t) {
               i_sum += d_array[j][t];
             }
+            std::cout << "skata" << std::endl;
             o_sum += d_array[i][j] / i_sum;
           }
           v[i] = o_sum;
@@ -65,6 +70,7 @@ namespace cluster {
         std::vector<T> centroids(no_clusters * vectors_dim);
         for (size_t i = 0; i < no_clusters; ++i) {
           for (size_t j = 0; j < vectors_dim; ++j) {
+            std::cout << "ee" << std::endl;
             centroids[i * vectors_dim + j] = dataset_vectors[idx[i] * vectors_dim + j];
           }
         }

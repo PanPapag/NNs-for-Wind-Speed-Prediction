@@ -27,10 +27,10 @@ int utils::io::GetFirstLine(std::string &file_name,
     return FAIL;
   }
   infile >> first_line;
-  if (first_line != "vectors" && first_line != "curves") {
-    status = DATASET_ERROR;
-    return FAIL;
-  }
+  // if (first_line != "vectors" && first_line != "curves") {
+  //   status = DATASET_ERROR;
+  //   return FAIL;
+  // }
   // close the file
   infile.close();
   return SUCCESS;

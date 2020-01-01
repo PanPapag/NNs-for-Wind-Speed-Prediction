@@ -9,6 +9,7 @@ def get_intermediate_layer_model(model, layer_name):
     intermediate_layer_model = Model(inputs=model.input,
                                      outputs=model.get_layer(layer_name).output)
     return intermediate_layer_model
+
 # Load and compile pretrained keras model
 def load_and_compile_model(path):
     model = load_model(path)
