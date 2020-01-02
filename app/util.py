@@ -32,7 +32,7 @@ def load_file(path):
     df.columns = ['Timestamp'] + dynamic_columns
     # Get the two different dataframes. The one with timestamps only and the
     # one without the timestamps
-    timestamps_df = df['Timestamp']
+    timestamps_df = df['Timestamp'].apply(lambda x: x.replace(' ', ','))
     values_df = df.drop('Timestamp', axis=1)
     # return info in the form of a tuple
     return values_df, timestamps_df
