@@ -24,12 +24,12 @@ def load_and_compile_model(path):
 '''
 def load_file(path):
     # load file into a pandas dataframe
-    df = pd.read_csv(path, encoding='utf-8', sep=',')
-    # name columns
     dynamic_columns = []
-    for i in range(df.shape[1] - 1):
+    df = pd.read_csv(path, encoding='utf-8', sep=',')
+    for i in range(df.shape[1]-1):
         dynamic_columns.append('df_' + str(i+1))
-    df.columns = ['Timestamp'] + dynamic_columns
+    headers = ['Timestamp'] + dynamic_columns
+    df = pd.read_csv(path, encoding='utf-8', sep=',', names=headers)
     # Get the two different dataframes. The one with timestamps only and the
     # one without the timestamps
     timestamps_df = df['Timestamp'].apply(lambda x: x.replace(' ', ','))
@@ -47,7 +47,12 @@ def compute_mse(test_data, target_data, model):
     res = model.evaluate(test_data, target_data, batch_size=32)
     return res
 
-def compute_mape(test_data, target_data, model):
-    model.compile(loss=losses.mean_absolute_percentage_error, optimizer='sgd')
-    res = model.evaluate(test_data, target_data, batch_size=32)
-    return res
+def compute_mape(y_true, y_pred, model):
+    # model.compile(loss=losses.mean_absolute_percentage_error, optimizer='sgd')
+    # res = model.evaluate(test_data, target_data, batch_size=32)
+    # return res
+    y_true, y_pred = np.array(y_true), np.array(y_pred)
+    for index, row in enumerate(y_true):
+        y_true[index] = np.mean(row)
+    mape = np.abs((y_true - y_pred) / y_true)
+    return np.mean(mape[np.isfinite(mape)]) * 100

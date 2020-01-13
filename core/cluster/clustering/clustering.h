@@ -106,7 +106,6 @@ namespace cluster {
         */
         std::tuple<std::vector<T>,std::vector<std::vector<size_t>>,double>
           Predict(void) {
-          std::cout << "Init" << std::endl;
           /* Start time measuring */
           auto start = high_resolution_clock::now();
           /* Declare types */
@@ -125,7 +124,7 @@ namespace cluster {
           /* Calculate clusters and update centroids max_iter times */
           for (size_t i = 0; i < max_iter; ++i) {
             /* Assigment step */
-						std::cout << "assignment" << std::endl;
+            std::cout << "Assignment" << std::endl;
             if (assign == "lloyd") {
 							clusters = LloydsAssignment(dataset_vectors, centroids,
 																					no_vectors, vectors_dim, no_clusters);
@@ -136,8 +135,8 @@ namespace cluster {
                                                 no_clusters, lsh_structure,
                                                 map_id_to_index);
 						}
-            std::cout << "update" << std::endl;
             /* Update step */
+            std::cout << "Update" << std::endl;
             auto prev_centroids = centroids;
 						if (update == "mean") {
 							centroids = LloydsUpdate(dataset_vectors, centroids,

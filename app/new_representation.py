@@ -54,6 +54,11 @@ def main():
     with open(OUTPUT_PATH, 'w') as file:
         df = pd.concat([ts, pd.DataFrame(y_pred)], axis=1)
         df.to_csv(file, index=False, header=False, sep='\t', encoding='utf-8')
+    
+    Y, t = util.load_file('../datasets/nn_representations.csv')
+    with open('../datasets/nn_representations2.csv', 'w') as file:
+        df = pd.concat([t, pd.DataFrame(Y)], axis=1)
+        df.to_csv(file, index=False, header=False, sep='\t', encoding='utf-8')
 
 if __name__ == '__main__':
     main()

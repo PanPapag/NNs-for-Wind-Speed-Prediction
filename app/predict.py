@@ -45,7 +45,7 @@ def main():
     y_true, _ = util.load_file(ACTUAL_PATH)
     # Compute MAE, MAPE and MSE
     mae = util.compute_mae(X, y_true, model)
-    mape = util.compute_mape(X, y_true, model)
+    mape = util.compute_mape(y_true, y_pred, model)
     mse = util.compute_mse(X, y_true, model)
     # Check if file already exists. If so delete it
     if os.path.exists(PREDICTED_PATH):
