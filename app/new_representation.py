@@ -11,7 +11,7 @@ from sklearn.metrics import mean_absolute_error
 from sklearn.metrics import mean_squared_error
 
 MODEL_PATH = '../models/WindDenseNN1.h5'
-OUTPUT_PATH = '../datasets/new_representations.csv'
+OUTPUT_PATH = '../results/new_representations.csv'
 
 def make_args_parser():
     # create an ArgumentParser object
@@ -53,11 +53,6 @@ def main():
     # Open file an write from scratch
     with open(OUTPUT_PATH, 'w') as file:
         df = pd.concat([ts, pd.DataFrame(y_pred)], axis=1)
-        df.to_csv(file, index=False, header=False, sep='\t', encoding='utf-8')
-    
-    Y, t = util.load_file('../datasets/nn_representations.csv')
-    with open('../datasets/nn_representations2.csv', 'w') as file:
-        df = pd.concat([t, pd.DataFrame(Y)], axis=1)
         df.to_csv(file, index=False, header=False, sep='\t', encoding='utf-8')
 
 if __name__ == '__main__':

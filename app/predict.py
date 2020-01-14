@@ -7,16 +7,16 @@ import pandas as pd
 
 MODEL_PATH = '../models/WindDenseNN1.h5'
 ACTUAL_PATH = '../datasets/actual.csv'
-PREDICTED_PATH = '../datasets/predicted.csv'
+PREDICTED_PATH = '../results/predicted.csv'
 
 def make_args_parser():
-    # create an ArgumentParser object
+    # Create an ArgumentParser object
     parser = argparse.ArgumentParser(usage='%(prog)s [-h] [-i <input file>]')
-    # fill parser with information about program arguments
+    # Fill parser with information about program arguments
     parser.add_argument('-i', '--input', action='store',
                         default=None,  metavar='',
                         help='relative path to the input file')
-    # return an ArgumentParser object
+    # Return an ArgumentParser object
     return parser.parse_args()
 
 def print_args(args):
@@ -29,19 +29,19 @@ def print_args(args):
     print()
 
 def main():
-    # parse and print arguments
+    # Parse and print arguments
     args = make_args_parser()
     print_args(args)
-    # load input file as well as the timestamps
+    # Load input file as well as the timestamps
     X, ts = util.load_file(args.input)
-    # load and compile model
+    # Load and compile model
     model = util.load_and_compile_model(MODEL_PATH)
-    # print model summary
+    # Print model summary
     print("------------------------- Model Summary -------------------------")
     model.summary()
-    # predict model output
+    # Predict model output
     y_pred = model.predict(X, batch_size=32)
-    # load actual values
+    # Load actual values
     y_true, _ = util.load_file(ACTUAL_PATH)
     # Compute MAE, MAPE and MSE
     mae = util.compute_mae(X, y_true, model)
