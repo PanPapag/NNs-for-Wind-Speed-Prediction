@@ -56,9 +56,6 @@ namespace utils {
           status = INVALID_DATASET;
           return FAIL;
         }
-        // skip first line
-        std::string temp_fl;
-        infile >> temp_fl;
         // Read file
         for (size_t i = 0; i < no_vectors && infile; ++i) {
           infile >> ids[i];

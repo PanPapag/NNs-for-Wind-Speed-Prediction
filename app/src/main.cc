@@ -135,7 +135,6 @@ int main(int argc, char **argv) {
 
   /* Print info */
   input_info.Print(clustering_object);
-
   /**
     Create a clustering object to perform dataset clustering using a
     specific algorithm, specified by init, assign and update string paramters
