@@ -11,7 +11,7 @@ The deep NN which predicts the wind speed has been trained using, as input, resu
 Download source code by typing:
 
 ```
-https://github.com/PanPapag/Hashing-and-search-for-vectors-and-polygonal-curves.git
+https://github.com/PanPapag/NNs-for-Wind-Speed-Prediction.git
 ```
 
 ## License
